@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -9,6 +10,7 @@ import {
 import { findPropertyByCode } from "@/domain/property/property.repository"
 import { getPropertyByCode } from "@/domain/property/property.service"
 import type { PropertyAmenities } from "@/domain/property/property.types"
+import { ExperiencesSection, ExperiencesSkeleton } from "./experiences-section"
 
 export async function generateMetadata({
   params,
@@ -210,6 +212,11 @@ export default async function PropertyPage({
               </div>
             </SectionCard>
           )}
+
+          {/* Experiences */}
+          <Suspense fallback={<ExperiencesSkeleton />}>
+            <ExperiencesSection property={property} />
+          </Suspense>
 
           {/* Contact */}
           {host && (
