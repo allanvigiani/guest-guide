@@ -44,7 +44,7 @@ export default async function Home() {
               style={{ backgroundColor: "var(--sz-coral)" }}
             >
               <MessageCircle size={18} />
-              Falar com a Central
+              Falar com o Suporte
             </a>
             <button
               className="px-6 py-3 rounded-full font-semibold text-white border border-white/40 transition-colors cursor-pointer"

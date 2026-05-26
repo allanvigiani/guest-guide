@@ -1,9 +1,9 @@
 import { Suspense } from "react"
 import Link from "next/link"
-import VirtualAssistant from './virtual-assistant'
+import VirtualAssistant from '@/components/organisms/virtual-assistant'
 import Image from "next/image"
 import {
-  Wifi, DoorOpen, CheckCircle2, XCircle, Clock,
+  Wifi, DoorOpen, CheckCircle2, Clock,
   Users, BedDouble, Bath, PawPrint, Cigarette,
   PartyPopper, Baby, Tv, Wind, ChefHat, WashingMachine,
   Building2, Flower2, Flame, Waves, Car, ArrowLeft, MessageCircle, MapPin,
@@ -11,7 +11,13 @@ import {
 import { findPropertyByCode } from "@/domain/property/property.repository"
 import { getPropertyByCode } from "@/domain/property/property.service"
 import type { PropertyAmenities } from "@/domain/property/property.types"
-import { ExperiencesSection, ExperiencesSkeleton } from "./experiences-section"
+import { ExperiencesSection, ExperiencesSkeleton } from "@/components/organisms/experiences-section"
+import { InfoRow } from "@/components/atoms/info-row"
+import { StatItem } from "@/components/atoms/stat-item"
+import { Divider } from "@/components/atoms/divider"
+import { RuleItem } from "@/components/atoms/rule-item"
+import { QuickCard } from "@/components/molecules/quick-card"
+import { SectionCard } from "@/components/molecules/section-card"
 
 export async function generateMetadata({
   params,
@@ -273,80 +279,6 @@ export default async function PropertyPage({
   )
 }
 
-function QuickCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div
-      className="flex flex-col items-center text-center py-4 px-3 rounded-xl shadow-md"
-      style={{ backgroundColor: "var(--sz-card)" }}
-    >
-      <div className="mb-1">{icon}</div>
-      <span className="text-xs font-bold mb-0.5" style={{ color: "var(--sz-navy)" }}>{label}</span>
-      <span className="text-xs" style={{ color: "var(--sz-muted)" }}>{value}</span>
-    </div>
-  )
-}
-
-function SectionCard({ title, icon, children, index }: { title: string; icon: React.ReactNode; children: React.ReactNode; index?: number }) {
-  return (
-    <div
-      className="rounded-2xl p-5"
-      style={{
-        backgroundColor: "var(--sz-card)",
-        border: "1px solid var(--sz-border)",
-        ...(index !== undefined ? {
-          animation: "sz-fade-in 0.45s ease both",
-          animationDelay: `calc(${index} * 0.45s)`,
-        } : {}),
-      }}
-    >
-      <div className="flex items-center gap-2 mb-4">
-        <span style={{ color: "var(--sz-coral)" }}>{icon}</span>
-        <h2 className="text-base font-bold" style={{ color: "var(--sz-navy)" }}>{title}</h2>
-      </div>
-      {children}
-    </div>
-  )
-}
-
-function InfoRow({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
-  return (
-    <div className="flex items-baseline justify-between gap-4 py-1">
-      <span className="text-sm" style={{ color: "var(--sz-muted)" }}>{label}</span>
-      <span
-        className={`text-sm font-semibold ${mono ? "font-mono tracking-widest" : ""}`}
-        style={{ color: "var(--sz-navy)" }}
-      >
-        {value}
-      </span>
-    </div>
-  )
-}
-
-function StatItem({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <span className="flex items-center gap-1.5" style={{ color: "var(--sz-muted)" }}>
-      <span style={{ color: "var(--sz-coral)" }}>{icon}</span>
-      {label}
-    </span>
-  )
-}
-
-function Divider() {
-  return <span className="w-px h-4" style={{ backgroundColor: "var(--sz-border)" }} />
-}
-
-function RuleItem({ icon, label, allowed }: { icon: React.ReactNode; label: string; allowed: boolean }) {
-  return (
-    <div className="flex items-center gap-2 text-sm">
-      {allowed
-        ? <CheckCircle2 size={14} style={{ color: "#16A34A", flexShrink: 0 }} />
-        : <XCircle size={14} style={{ color: "#DC2626", flexShrink: 0 }} />}
-      <span className="flex items-center gap-1" style={{ color: "var(--sz-muted)" }}>
-        {icon} {label}
-      </span>
-    </div>
-  )
-}
 
 const AMENITY_LIST: { key: string; label: string; icon: React.ReactNode }[] = [
   { key: "wifi",            label: "Wi-Fi",          icon: <Wifi size={14} /> },
