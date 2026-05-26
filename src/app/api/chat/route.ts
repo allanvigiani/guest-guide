@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import Anthropic from "@anthropic-ai/sdk"
 import type { MessageParam } from "@anthropic-ai/sdk/resources/messages"
 import { getPropertyByCode } from "@/domain/property/property.service"
-import { getExperiences } from "@/domain/experiences/experiences.service"
 import { buildChatPayload } from "@/domain/chat/chat.service"
 import { aiClient } from "@/lib/ai"
 
@@ -29,12 +28,11 @@ export async function POST(request: NextRequest) {
   }
 
   const property = await getPropertyByCode(propertyCode.toUpperCase())
-  const experiences = await getExperiences(property.id)
 
   const { stream: _, ...streamParams } = buildChatPayload(
     messages as MessageParam[],
     property,
-    experiences
+    property.experiences
   )
 
   const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>()

@@ -1,20 +1,14 @@
-export interface Restaurant {
+export interface Place {
   name: string
   distance: string
   description: string
 }
 
-export interface Attraction {
-  name: string
-  distance: string
-  description: string
-}
+export type Restaurant = Place
+export type Attraction = Place
 
-export interface Essential {
-  name: string
+export interface Essential extends Place {
   type: string
-  distance: string
-  description: string
 }
 
 export interface ExperiencesData {

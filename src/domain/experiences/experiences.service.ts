@@ -20,19 +20,13 @@ export class ExperiencesGenerationError extends Error {
   }
 }
 
-export async function getExperiences(
-  propertyId: string
-): Promise<PropertyExperiences | null> {
-  return findExperiencesByPropertyId(propertyId)
-}
-
 export async function getOrGenerateExperiences(
   property: PropertyWithRelations
 ): Promise<PropertyExperiences> {
   const cached = await findExperiencesByPropertyId(property.id)
   if (cached) {
     await new Promise(resolve => setTimeout(resolve, 2000))
-    return cached;
+    return cached
   }
 
   let rawText: string
@@ -49,13 +43,13 @@ export async function getOrGenerateExperiences(
       ],
     })
 
-    const firstBlock = message.content[0];
+    const firstBlock = message.content[0]
 
     if (firstBlock.type !== "text") {
-      throw new ExperiencesGenerationError("Unexpected non-text response from AI");
+      throw new ExperiencesGenerationError("Unexpected non-text response from AI")
     }
 
-    rawText = firstBlock.text;
+    rawText = firstBlock.text
   } catch (err) {
     if (err instanceof ExperiencesGenerationError) {
       throw err
@@ -69,7 +63,7 @@ export async function getOrGenerateExperiences(
       )
     }
 
-    throw new ExperiencesGenerationError("Failed to reach AI service", err);
+    throw new ExperiencesGenerationError("Failed to reach AI service", err)
   }
 
   let data: ExperiencesData
@@ -83,5 +77,5 @@ export async function getOrGenerateExperiences(
     )
   }
 
-  return upsertExperiences(property.id, data);
+  return upsertExperiences(property.id, data)
 }
