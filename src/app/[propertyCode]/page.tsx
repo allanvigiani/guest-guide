@@ -178,14 +178,6 @@ export default async function PropertyPage({
             </SectionCard>
           )}
 
-          {/* Wi-Fi */}
-          {operational && (
-            <SectionCard title="Wi-Fi" icon={<Wifi size={18} />}>
-              <InfoRow label="Rede" value={operational.wifiNetwork} />
-              <InfoRow label="Senha" value={operational.wifiPassword} mono />
-            </SectionCard>
-          )}
-
           {/* Rules */}
           {rules && (
             <SectionCard title="Regras da casa" icon={<CheckCircle2 size={18} />}>
@@ -198,6 +190,11 @@ export default async function PropertyPage({
               </div>
             </SectionCard>
           )}
+
+          {/* Experiences */}
+          <Suspense fallback={<ExperiencesSkeleton />}>
+            <ExperiencesSection property={property} />
+          </Suspense>
 
           {/* Amenities */}
           {amenities && (
@@ -213,10 +210,13 @@ export default async function PropertyPage({
             </SectionCard>
           )}
 
-          {/* Experiences */}
-          <Suspense fallback={<ExperiencesSkeleton />}>
-            <ExperiencesSection property={property} />
-          </Suspense>
+          {/* Wi-Fi */}
+          {operational && (
+            <SectionCard title="Wi-Fi" icon={<Wifi size={18} />}>
+              <InfoRow label="Rede" value={operational.wifiNetwork} />
+              <InfoRow label="Senha" value={operational.wifiPassword} mono />
+            </SectionCard>
+          )}
 
           {/* Contact */}
           {host && (
