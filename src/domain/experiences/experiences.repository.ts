@@ -31,19 +31,22 @@ export async function findExperiencesByPropertyId(
   return mapRow(row)
 }
 
-export async function createExperiences(
+export async function upsertExperiences(
   propertyId: string,
   data: ExperiencesData
 ): Promise<PropertyExperiences> {
-  const row = await prisma.experiences.create({
-    data: {
-      propertyId,
-      welcomeMessage: data.welcomeMessage,
-      restaurants: data.restaurants,
-      attractions: data.attractions,
-      essentials: data.essentials,
-      seasonalTip: data.seasonalTip,
-    },
+  const payload = {
+    propertyId,
+    welcomeMessage: data.welcomeMessage,
+    restaurants: data.restaurants,
+    attractions: data.attractions,
+    essentials: data.essentials,
+    seasonalTip: data.seasonalTip,
+  }
+  const row = await prisma.experiences.upsert({
+    where: { propertyId },
+    create: payload,
+    update: payload,
   })
   return mapRow(row)
 }
