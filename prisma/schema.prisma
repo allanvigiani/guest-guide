@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Property {
+  id            String       @id @default(cuid())
+  code          String       @unique
+  name          String
+  propertyType  String
+  bedroomQty    Int
+  bathroomQty   Int
+  guestCapacity Int
+  images        String[]
+  address       Address?
+  operational   Operational?
+  rules         Rules?
+  amenities     Amenities?
+  host          Host?
+  experiences   Experiences?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Address {
+  id           String   @id @default(cuid())
+  propertyId   String   @unique
+  property     Property @relation(fields: [propertyId], references: [id])
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String
+  postalCode   String
+}
+
+model Operational {
+  id                         String   @id @default(cuid())
+  propertyId                 String   @unique
+  property                   Property @relation(fields: [propertyId], references: [id])
+  wifiNetwork                String
+  wifiPassword               String
+  isSelfCheckin              Boolean
+  propertyAccessType         String
+  propertyAccessInstructions String
+  propertyPassword           String
+  hasParkingSpot             Boolean
+  parkingSpotIdentifier      String?
+  parkingSpotInstructions    String?
+}
+
+model Rules {
+  id                  String   @id @default(cuid())
+  propertyId          String   @unique
+  property            Property @relation(fields: [propertyId], references: [id])
+  checkInTime         String
+  checkOutTime        String
+  allowPet            Boolean
+  smokingPermitted    Boolean
+  suitableForChildren Boolean
+  suitableForBabies   Boolean
+  eventsPermitted     Boolean
+}
+
+model Amenities {
+  id              String   @id @default(cuid())
+  propertyId      String   @unique
+  property        Property @relation(fields: [propertyId], references: [id])
+  wifi            Boolean  @default(false)
+  tv              Boolean  @default(false)
+  airConditioning Boolean  @default(false)
+  kitchen         Boolean  @default(false)
+  washingMachine  Boolean  @default(false)
+  elevator        Boolean  @default(false)
+  balcony         Boolean  @default(false)
+  bbqGrill        Boolean  @default(false)
+  dishwasher      Boolean  @default(false)
+  pool            Boolean  @default(false)
+}
+
+model Host {
+  id         String   @id @default(cuid())
+  propertyId String   @unique
+  property   Property @relation(fields: [propertyId], references: [id])
+  name       String
+  phone      String
+}
+
+model Experiences {
+  id             String   @id @default(cuid())
+  propertyId     String   @unique
+  property       Property @relation(fields: [propertyId], references: [id])
+  welcomeMessage String
+  restaurants    Json
+  attractions    Json
+  essentials     Json
+  seasonalTip    String
+  generatedAt    DateTime @default(now())
+}
