@@ -20,6 +20,12 @@ export class ExperiencesGenerationError extends Error {
   }
 }
 
+export async function getExperiences(
+  propertyId: string
+): Promise<PropertyExperiences | null> {
+  return findExperiencesByPropertyId(propertyId)
+}
+
 export async function getOrGenerateExperiences(
   property: PropertyWithRelations
 ): Promise<PropertyExperiences> {

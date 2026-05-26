@@ -136,7 +136,7 @@ function Header() {
           style={{ backgroundColor: "var(--sz-coral)" }}
         >
           <MessageCircle size={14} />
-          Atendimento
+          Contate o Suporte
         </a>
       </div>
     </header>

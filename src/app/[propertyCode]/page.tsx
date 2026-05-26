@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import Link from "next/link"
+import VirtualAssistant from './virtual-assistant'
 import Image from "next/image"
 import {
   Wifi, DoorOpen, CheckCircle2, XCircle, Clock,
@@ -61,7 +62,7 @@ export default async function PropertyPage({
               style={{ backgroundColor: "var(--sz-coral)" }}
             >
               <MessageCircle size={14} />
-              Atendimento
+              Contate o Anfitrião
             </a>
           )}
         </div>
@@ -266,6 +267,8 @@ export default async function PropertyPage({
       >
         © {new Date().getFullYear()} Seazone · {property.code}
       </footer>
+
+      <VirtualAssistant propertyCode={property.code} propertyName={property.name} />
     </div>
   )
 }
