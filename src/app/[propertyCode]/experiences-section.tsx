@@ -21,7 +21,7 @@ export async function ExperiencesSection({ property }: { property: PropertyWithR
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" style={{ animation: "sz-fade-in 0.45s ease both" }}>
       {/* Welcome message */}
       <div
         className="rounded-2xl p-5"
@@ -99,35 +99,7 @@ export async function ExperiencesSection({ property }: { property: PropertyWithR
   )
 }
 
-export function ExperiencesSkeleton() {
-  return (
-    <div className="flex flex-col gap-4">
-      {[1, 2, 3, 4].map((i) => (
-        <div
-          key={i}
-          className="rounded-2xl p-5 animate-pulse"
-          style={{ backgroundColor: "var(--sz-card)", border: "1px solid var(--sz-border)" }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: "var(--sz-border)" }} />
-            <div className="h-4 w-40 rounded" style={{ backgroundColor: "var(--sz-border)" }} />
-          </div>
-          <div className="flex flex-col gap-3">
-            {[1, 2, 3].map((j) => (
-              <div key={j} className="flex flex-col gap-1.5">
-                <div className="flex justify-between">
-                  <div className="h-3 w-36 rounded" style={{ backgroundColor: "var(--sz-border)" }} />
-                  <div className="h-3 w-20 rounded" style={{ backgroundColor: "var(--sz-border)" }} />
-                </div>
-                <div className="h-3 w-full rounded" style={{ backgroundColor: "var(--sz-border)" }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+export { ExperiencesSkeleton } from "./experiences-skeleton"
 
 function ExperienceCard({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   return (

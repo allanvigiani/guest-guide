@@ -136,7 +136,12 @@ export default async function PropertyPage({
         {/* Stats bar */}
         <div
           className="flex items-center justify-center gap-6 py-4 mb-6 rounded-2xl text-sm font-medium"
-          style={{ backgroundColor: "var(--sz-card)", border: "1px solid var(--sz-border)" }}
+          style={{
+            backgroundColor: "var(--sz-card)",
+            border: "1px solid var(--sz-border)",
+            animation: "sz-fade-in 0.45s ease both",
+            animationDelay: "calc(0 * 0.45s)",
+          }}
         >
           <StatItem icon={<BedDouble size={16} />} label={`${property.bedroomQty} quarto${property.bedroomQty > 1 ? "s" : ""}`} />
           <Divider />
@@ -148,7 +153,7 @@ export default async function PropertyPage({
         <div className="flex flex-col gap-4">
           {/* Access */}
           {operational && (
-            <SectionCard title="Acesso ao imóvel" icon={<DoorOpen size={18} />}>
+            <SectionCard title="Acesso ao imóvel" icon={<DoorOpen size={18} />} index={1}>
               <InfoRow label="Tipo de acesso" value={
                 operational.propertyAccessType === "smart_lock" ? "Fechadura eletrônica"
                   : operational.propertyAccessType === "keybox" ? "Cofre de chaves"
@@ -180,7 +185,7 @@ export default async function PropertyPage({
 
           {/* Rules */}
           {rules && (
-            <SectionCard title="Regras da casa" icon={<CheckCircle2 size={18} />}>
+            <SectionCard title="Regras da casa" icon={<CheckCircle2 size={18} />} index={2}>
               <div className="grid grid-cols-2 gap-2">
                 <RuleItem icon={<PawPrint size={13} />} label="Pets permitidos" allowed={rules.allowPet} />
                 <RuleItem icon={<Cigarette size={13} />} label="Fumar" allowed={rules.smokingPermitted} />
@@ -198,7 +203,7 @@ export default async function PropertyPage({
 
           {/* Amenities */}
           {amenities && (
-            <SectionCard title="Comodidades" icon={<CheckCircle2 size={18} />}>
+            <SectionCard title="Comodidades" icon={<CheckCircle2 size={18} />} index={4}>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {AMENITY_LIST.filter(({ key }) => amenities[key as keyof PropertyAmenities] === true).map(({ key, label, icon }) => (
                   <div key={key} className="flex items-center gap-2 text-sm font-medium" style={{ color: "var(--sz-text)" }}>
@@ -212,7 +217,7 @@ export default async function PropertyPage({
 
           {/* Wi-Fi */}
           {operational && (
-            <SectionCard title="Wi-Fi" icon={<Wifi size={18} />}>
+            <SectionCard title="Wi-Fi" icon={<Wifi size={18} />} index={5}>
               <InfoRow label="Rede" value={operational.wifiNetwork} />
               <InfoRow label="Senha" value={operational.wifiPassword} mono />
             </SectionCard>
@@ -220,7 +225,7 @@ export default async function PropertyPage({
 
           {/* Contact */}
           {host && (
-            <SectionCard title="Seu anfitrião" icon={<MapPin size={18} />}>
+            <SectionCard title="Seu anfitrião" icon={<MapPin size={18} />} index={6}>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <p className="font-bold text-base" style={{ color: "var(--sz-navy)" }}>{host.name}</p>
@@ -278,11 +283,18 @@ function QuickCard({ icon, label, value }: { icon: React.ReactNode; label: strin
   )
 }
 
-function SectionCard({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
+function SectionCard({ title, icon, children, index }: { title: string; icon: React.ReactNode; children: React.ReactNode; index?: number }) {
   return (
     <div
       className="rounded-2xl p-5"
-      style={{ backgroundColor: "var(--sz-card)", border: "1px solid var(--sz-border)" }}
+      style={{
+        backgroundColor: "var(--sz-card)",
+        border: "1px solid var(--sz-border)",
+        ...(index !== undefined ? {
+          animation: "sz-fade-in 0.45s ease both",
+          animationDelay: `calc(${index} * 0.45s)`,
+        } : {}),
+      }}
     >
       <div className="flex items-center gap-2 mb-4">
         <span style={{ color: "var(--sz-coral)" }}>{icon}</span>

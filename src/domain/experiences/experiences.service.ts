@@ -25,6 +25,7 @@ export async function getOrGenerateExperiences(
 ): Promise<PropertyExperiences> {
   const cached = await findExperiencesByPropertyId(property.id)
   if (cached) {
+    await new Promise(resolve => setTimeout(resolve, 2000))
     return cached;
   }
 
