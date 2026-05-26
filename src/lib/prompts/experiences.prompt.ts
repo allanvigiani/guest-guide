@@ -35,10 +35,11 @@ The JSON must follow this exact structure:
 }
 
 Rules:
-- restaurants: 4 to 5 items.
-- attractions: 3 to 4 items.
-- essentials: minimum 3 items, covering at least pharmacy, supermarket, and one other type.
+- restaurants: exactly 4 to 5 items.
+- attractions: exactly 3 to 4 items.
+- essentials: minimum 3 items. MUST include at least one item with type "pharmacy" and one with type "supermarket".
+- The "type" field in essentials MUST be exactly one of the listed English strings (pharmacy, supermarket, hospital, atm, gas_station, laundry) — never translated, never free-form.
 - All distances are relative to the property address.
 - Use real place names that exist or are highly likely to exist near the given address.
-- Respond in the same language as the property data (usually Portuguese).
+- The "name", "description", "welcomeMessage", and "seasonalTip" fields must be in the same language as the property data (usually Portuguese). All "type" values remain in English.
 - Return ONLY the JSON object. Nothing else.`
