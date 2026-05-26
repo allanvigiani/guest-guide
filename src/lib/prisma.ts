@@ -3,9 +3,7 @@ import { PrismaNeon } from "@prisma/adapter-neon"
 import { env } from "@/lib/env"
 import ws from "ws"
 
-// PrismaClient is generated to src/generated/prisma/ by `npx prisma generate`
-// @ts-expect-error — generated module does not exist until `prisma generate` runs
-import { PrismaClient } from "@/generated/prisma"
+import { PrismaClient } from "@/generated/prisma/client"
 
 neonConfig.webSocketConstructor = ws
 

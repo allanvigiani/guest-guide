@@ -1,65 +1,155 @@
-import Image from "next/image";
+import Link from "next/link"
+import Image from "next/image"
+import { BedDouble, Bath, Users, MapPin, MessageCircle } from "lucide-react"
+import { findAllProperties } from "@/domain/property/property.repository"
 
-export default function Home() {
+export default async function Home() {
+  const properties = await findAllProperties()
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div style={{ backgroundColor: "var(--sz-bg)", minHeight: "100dvh" }}>
+      <Header />
+
+      {/* Hero */}
+      <section className="relative flex items-center justify-center" style={{ minHeight: "500px" }}>
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1600"
+            alt="Propriedade Seazone"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to bottom, rgba(13,27,42,0.65) 0%, rgba(13,27,42,0.55) 100%)" }}
+          />
+        </div>
+
+        <div className="relative z-10 text-center px-4 py-20 max-w-2xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-3">
+            Bem-vindo à sua experiência{" "}
+            <span style={{ color: "var(--sz-coral)" }}>inesquecível</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-white/80 text-lg mb-8">
+            Exclusividade e conforto em cada detalhe da sua hospedagem
           </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://wa.me/5500000000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-colors cursor-pointer"
+              style={{ backgroundColor: "var(--sz-coral)" }}
+            >
+              <MessageCircle size={18} />
+              Falar com a Central
+            </a>
+            <button
+              className="px-6 py-3 rounded-full font-semibold text-white border border-white/40 transition-colors cursor-pointer"
+              style={{ backgroundColor: "rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}
+            >
+              Explorar imóveis ↓
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      {/* Properties grid */}
+      <section className="max-w-6xl mx-auto px-4 py-16">
+        <h2 className="text-2xl font-bold mb-8" style={{ color: "var(--sz-navy)" }}>
+          Imóveis cadastrados
+        </h2>
+        {properties.length === 0 ? (
+          <p style={{ color: "var(--sz-muted)" }}>Nenhum imóvel cadastrado ainda.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.map((p) => (
+              <Link
+                key={p.id}
+                href={`/${p.code}`}
+                className="block rounded-2xl overflow-hidden transition-shadow hover:shadow-lg cursor-pointer"
+                style={{ backgroundColor: "var(--sz-card)", border: "1px solid var(--sz-border)" }}
+              >
+                <div className="relative h-44">
+                  {p.images[0] ? (
+                    <Image
+                      src={p.images[0]}
+                      alt={p.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full" style={{ backgroundColor: "var(--sz-border)" }} />
+                  )}
+                  <span
+                    className="absolute top-3 left-3 text-xs font-bold px-2 py-1 rounded-md text-white"
+                    style={{ backgroundColor: "var(--sz-navy)" }}
+                  >
+                    {p.code}
+                  </span>
+                </div>
+
+                <div className="p-4">
+                  <h3 className="font-bold text-base mb-1 leading-snug" style={{ color: "var(--sz-navy)" }}>
+                    {p.name}
+                  </h3>
+                  {p.address && (
+                    <p className="flex items-center gap-1 text-xs mb-3" style={{ color: "var(--sz-muted)" }}>
+                      <MapPin size={11} />
+                      {p.address.neighborhood}, {p.address.city} — {p.address.state}
+                    </p>
+                  )}
+                  <div className="flex gap-3 text-xs font-medium" style={{ color: "var(--sz-muted)" }}>
+                    <span className="flex items-center gap-1"><BedDouble size={12} />{p.bedroomQty} qts</span>
+                    <span className="flex items-center gap-1"><Bath size={12} />{p.bathroomQty} ban</span>
+                    <span className="flex items-center gap-1"><Users size={12} />até {p.guestCapacity}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <Footer />
     </div>
-  );
+  )
+}
+
+function Header() {
+  return (
+    <header
+      className="sticky top-0 z-50 flex items-center justify-between px-6 py-4"
+      style={{ backgroundColor: "var(--sz-navy)" }}
+    >
+      <span className="text-white font-extrabold text-xl tracking-tight">seazone</span>
+      <div className="flex items-center gap-4">
+        <span className="text-white/60 text-sm hidden sm:block">Guia do Hóspede</span>
+        <a
+          href="https://wa.me/5500000000000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-white transition-colors cursor-pointer"
+          style={{ backgroundColor: "var(--sz-coral)" }}
+        >
+          <MessageCircle size={14} />
+          Atendimento
+        </a>
+      </div>
+    </header>
+  )
+}
+
+function Footer() {
+  return (
+    <footer
+      className="py-6 text-center text-xs"
+      style={{ backgroundColor: "var(--sz-navy)", color: "rgba(255,255,255,0.4)" }}
+    >
+      © {new Date().getFullYear()} Allan · Guia do Hóspede
+    </footer>
+  )
 }
