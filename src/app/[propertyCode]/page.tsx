@@ -102,7 +102,7 @@ export default async function PropertyPage({
           >
             {property.code}
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-2">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-2">
             Bem-vindo à sua experiência{" "}
             <span style={{ color: "var(--sz-coral)" }}>inesquecível</span>
           </h1>
@@ -142,7 +142,7 @@ export default async function PropertyPage({
       <main className="max-w-3xl mx-auto px-4 pb-16" style={{ paddingTop: rules ? "72px" : "24px" }}>
         {/* Stats bar */}
         <div
-          className="flex items-center justify-center gap-6 py-4 mb-6 rounded-2xl text-sm font-medium"
+          className="flex items-stretch py-4 mb-6 rounded-2xl text-xs sm:text-sm font-medium"
           style={{
             backgroundColor: "var(--sz-card)",
             border: "1px solid var(--sz-border)",
@@ -150,11 +150,17 @@ export default async function PropertyPage({
             animationDelay: "calc(0 * 0.45s)",
           }}
         >
-          <StatItem icon={<BedDouble size={16} />} label={`${property.bedroomQty} quarto${property.bedroomQty > 1 ? "s" : ""}`} />
+          <div className="flex-1 flex items-center justify-center">
+            <StatItem icon={<BedDouble size={16} />} label={`${property.bedroomQty} quarto${property.bedroomQty > 1 ? "s" : ""}`} />
+          </div>
           <Divider />
-          <StatItem icon={<Bath size={16} />} label={`${property.bathroomQty} banheiro${property.bathroomQty > 1 ? "s" : ""}`} />
+          <div className="flex-1 flex items-center justify-center">
+            <StatItem icon={<Bath size={16} />} label={`${property.bathroomQty} banheiro${property.bathroomQty > 1 ? "s" : ""}`} />
+          </div>
           <Divider />
-          <StatItem icon={<Users size={16} />} label={`Até ${property.guestCapacity} hóspedes`} />
+          <div className="flex-1 flex items-center justify-center">
+            <StatItem icon={<Users size={16} />} label={`Até ${property.guestCapacity} hóspedes`} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4">
