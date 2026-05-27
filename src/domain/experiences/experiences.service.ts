@@ -6,8 +6,8 @@ import {
   findExperiencesByPropertyId,
   upsertExperiences,
 } from "./experiences.repository"
-import type { PropertyWithRelations } from "@/domain/property/property.types"
-import type { PropertyExperiences, ExperiencesData } from "./experiences.types"
+import type { PropertyWithRelations, PropertyExperiences } from "@/domain/property/property.types"
+import type { ExperiencesData } from "./experiences.types"
 
 export class ExperiencesGenerationError extends Error {
   constructor(

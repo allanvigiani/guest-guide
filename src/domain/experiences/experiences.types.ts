@@ -19,8 +19,3 @@ export interface ExperiencesData {
   seasonalTip: string
 }
 
-export interface PropertyExperiences extends ExperiencesData {
-  id: string
-  propertyId: string
-  generatedAt: Date
-}

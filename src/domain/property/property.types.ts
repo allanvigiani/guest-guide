@@ -1,4 +1,13 @@
-import type { PropertyExperiences } from "@/domain/experiences/experiences.types"
+export interface PropertyExperiences {
+  id: string
+  propertyId: string
+  welcomeMessage: string
+  restaurants: { name: string; distance: string; description: string }[]
+  attractions: { name: string; distance: string; description: string }[]
+  essentials: { name: string; distance: string; description: string; type: string }[]
+  seasonalTip: string
+  generatedAt: Date
+}
 
 export interface PropertyAddress {
   id: string

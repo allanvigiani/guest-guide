@@ -1,8 +1,7 @@
 import type { MessageParam } from "@anthropic-ai/sdk/resources/messages"
 import { env } from "@/lib/env"
 import { buildAssistantPrompt } from "@/lib/prompts/assistant.prompt"
-import type { PropertyWithRelations } from "@/domain/property/property.types"
-import type { PropertyExperiences } from "@/domain/experiences/experiences.types"
+import type { PropertyWithRelations, PropertyExperiences } from "@/domain/property/property.types"
 
 export interface ChatPayload {
   model: string

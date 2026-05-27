@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
-import type { PropertyExperiences, ExperiencesData } from "./experiences.types"
+import type { PropertyExperiences } from "@/domain/property/property.types"
+import type { ExperiencesData } from "./experiences.types"
 
 function mapRow(row: {
   id: string

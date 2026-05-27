@@ -1,5 +1,4 @@
-import type { PropertyWithRelations } from "@/domain/property/property.types"
-import type { PropertyExperiences } from "@/domain/experiences/experiences.types"
+import type { PropertyWithRelations, PropertyExperiences } from "@/domain/property/property.types"
 
 export function buildAssistantPrompt(
   property: PropertyWithRelations,
