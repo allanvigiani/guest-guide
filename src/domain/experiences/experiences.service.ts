@@ -31,25 +31,35 @@ export async function getOrGenerateExperiences(
 
   let rawText: string
   try {
-    const message = await aiClient.messages.create({
+    const userContent = `Generate a guest guide for this property:\n${JSON.stringify(property, null, 2)}`
+    const messages: Anthropic.MessageParam[] = [{ role: "user", content: userContent }]
+
+    let message = await aiClient.messages.create({
       model: env.AI_MODEL,
-      max_tokens: 2048,
+      max_tokens: 4096,
       system: EXPERIENCES_SYSTEM_PROMPT,
-      messages: [
-        {
-          role: "user",
-          content: `Generate a guest guide for this property:\n${JSON.stringify(property, null, 2)}`,
-        },
-      ],
+      tools: [{ type: "web_search_20250305" as const, name: "web_search" }],
+      messages,
     })
 
-    const firstBlock = message.content[0]
+    while (message.stop_reason === "pause_turn") {
+      messages.push({ role: "assistant", content: message.content })
+      message = await aiClient.messages.create({
+        model: env.AI_MODEL,
+        max_tokens: 4096,
+        system: EXPERIENCES_SYSTEM_PROMPT,
+        tools: [{ type: "web_search_20250305" as const, name: "web_search" }],
+        messages,
+      })
+    }
 
-    if (firstBlock.type !== "text") {
+    const textBlock = message.content.find(b => b.type === "text")
+
+    if (!textBlock || textBlock.type !== "text") {
       throw new ExperiencesGenerationError("Unexpected non-text response from AI")
     }
 
-    rawText = firstBlock.text
+    rawText = textBlock.text
   } catch (err) {
     if (err instanceof ExperiencesGenerationError) {
       throw err

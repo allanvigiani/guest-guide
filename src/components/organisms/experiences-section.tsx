@@ -82,7 +82,7 @@ export async function ExperiencesSection({ property }: { property: PropertyWithR
       </div>
 
       {/* Regenerate button (no action yet) */}
-      <button
+      {/* <button
         type="button"
         disabled
         className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl text-sm font-semibold cursor-not-allowed"
@@ -94,7 +94,7 @@ export async function ExperiencesSection({ property }: { property: PropertyWithR
       >
         <RefreshCw size={15} />
         Gerar mais experiências
-      </button>
+      </button> */}
     </div>
   )
 }
