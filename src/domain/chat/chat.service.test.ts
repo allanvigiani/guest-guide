@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from "vitest"
 import { buildChatPayload } from "./chat.service"
-import { buildAssistantPrompt } from "@/lib/prompts/assistant.prompt"
+import { buildAssistantPrompt } from "./assistant.prompt"
 
 vi.mock("@/lib/env", () => ({
   env: { AI_MODEL: "claude-test" },
 }))
 
-vi.mock("@/lib/prompts/assistant.prompt", () => ({
+vi.mock("./assistant.prompt", () => ({
   buildAssistantPrompt: vi.fn(() => "system prompt gerado"),
 }))
 

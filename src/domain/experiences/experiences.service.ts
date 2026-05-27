@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk"
 import { aiClient } from "@/lib/ai"
 import { env } from "@/lib/env"
-import { EXPERIENCES_SYSTEM_PROMPT } from "@/lib/prompts/experiences.prompt"
+import { EXPERIENCES_SYSTEM_PROMPT } from "./experiences.prompt"
 import {
   findExperiencesByPropertyId,
   upsertExperiences,
