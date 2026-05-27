@@ -3,7 +3,7 @@ import { buildChatPayload } from "./chat.service"
 import { buildAssistantPrompt } from "./assistant.prompt"
 
 vi.mock("@/lib/env", () => ({
-  env: { AI_MODEL: "claude-test" },
+  env: { AI_MODEL: "claude-test", AI_CHAT_MODEL: "claude-test" },
 }))
 
 vi.mock("./assistant.prompt", () => ({
