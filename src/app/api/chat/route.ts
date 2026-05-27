@@ -29,8 +29,10 @@ export async function POST(request: NextRequest) {
 
   const property = await getPropertyByCode(propertyCode.toUpperCase())
 
+  const recentMessages = (messages as MessageParam[]).slice(-10)
+
   const { stream: _, ...streamParams } = buildChatPayload(
-    messages as MessageParam[],
+    recentMessages,
     property,
     property.experiences
   )
