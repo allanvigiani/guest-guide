@@ -148,6 +148,21 @@ Testes unitários com **Vitest** cobrindo services e repositories dos domínios 
 | Segurança | `propertyCode` funciona como senha por obscuridade — sem autenticação real | Qualquer pessoa que saiba o código acessa o guia |
 | Robustez | JSON retornado pela IA vai direto ao banco sem validação de schema — falhas de formato só aparecem em runtime | Erros silenciosos em caso de resposta inesperada do modelo |
 | Portabilidade | Adapter `@prisma/adapter-neon` é específico do Neon — migrar para outro PostgreSQL exige trocar adapter e cliente | Acoplamento ao provedor de banco |
+| Assistente virtual | Rate limit da Anthropic pode causar esperas de 60s+ na primeira mensagem do chat (ver abaixo) | Percepção de travamento |
+
+### Rate limit no assistente virtual
+
+O plano gratuito da Anthropic impõe um limite de **50.000 tokens de entrada por minuto** para o modelo usado no chat (`claude-haiku-4-5`). Cada mensagem consome entre 1.100 e 1.500 tokens (prompt do sistema + histórico). Em cenários de uso intenso ou durante testes, esse limite é atingido rapidamente.
+
+Quando o limite é atingido, a API retorna um erro `429` com um cabeçalho `Retry-After` de mais ou menos 60 segundos. O SDK da Anthropic aguarda esse intervalo e faz uma nova tentativa automaticamente - sem nenhum feedback visual para o usuário.
+
+**Mitigação temporária implementada:** o assistente virtual exibe uma mensagem no próprio chat após 10 segundos sem resposta:
+
+> *"O serviço está sobrecarregado no momento. Já irei te responder!"*
+
+A requisição continua em andamento; quando a API responde (após o retry do SDK), o texto chega normalmente. Isso evita a sensação de travamento sem alterar o comportamento de retry.
+
+**Solução definitiva:** fazer upgrade do plano na [Anthropic Console](https://console.anthropic.com) para aumentar os limites de tokens por minuto.
 
 ## Próximos passos
 

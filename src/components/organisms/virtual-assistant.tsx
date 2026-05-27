@@ -24,12 +24,14 @@ export default function VirtualAssistant({ propertyCode, propertyName }: Virtual
   const [input, setInput] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [slowWarning, setSlowWarning] = useState(false)
+  const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages, slowWarning])
 
   useEffect(() => {
     if (isOpen) inputRef.current?.focus()
@@ -41,9 +43,9 @@ export default function VirtualAssistant({ propertyCode, propertyName }: Virtual
     const userContent = input.trim()
     setIsStreaming(true)
     setError(null)
+    setSlowWarning(false)
     setInput('')
 
-    // Ignora a welcome message (índice 0) ao montar o payload da API
     const apiMessages = [
       ...messages.slice(1).map(m => ({ role: m.role, content: m.content })),
       { role: 'user' as const, content: userContent },
@@ -54,6 +56,8 @@ export default function VirtualAssistant({ propertyCode, propertyName }: Virtual
       { role: 'user', content: userContent },
       { role: 'assistant', content: '' },
     ])
+
+    slowTimerRef.current = setTimeout(() => setSlowWarning(true), 10000)
 
     try {
       const response = await fetch('/api/chat', {
@@ -68,12 +72,22 @@ export default function VirtualAssistant({ propertyCode, propertyName }: Virtual
 
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
+      let firstChunk = true
 
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
         const chunk = decoder.decode(value, { stream: true })
-        // Updater funcional: acrescenta chunk sem closure stale
+
+        if (firstChunk) {
+          firstChunk = false
+          if (slowTimerRef.current) {
+            clearTimeout(slowTimerRef.current)
+            slowTimerRef.current = null
+          }
+          setSlowWarning(false)
+        }
+
         setMessages(prev => [
           ...prev.slice(0, -1),
           { role: 'assistant', content: prev[prev.length - 1].content + chunk },
@@ -89,6 +103,11 @@ export default function VirtualAssistant({ propertyCode, propertyName }: Virtual
           : prev
       })
     } finally {
+      if (slowTimerRef.current) {
+        clearTimeout(slowTimerRef.current)
+        slowTimerRef.current = null
+      }
+      setSlowWarning(false)
       setIsStreaming(false)
     }
   }, [isStreaming, input, messages, propertyCode])
@@ -173,6 +192,21 @@ export default function VirtualAssistant({ propertyCode, propertyName }: Virtual
               </div>
             </div>
           ))}
+
+          {slowWarning && (
+            <div className="flex justify-start">
+              <div
+                className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed"
+                style={{
+                  backgroundColor: 'var(--sz-card)',
+                  color: 'var(--sz-muted)',
+                  border: '1px solid var(--sz-border)',
+                }}
+              >
+                O serviço está sobrecarregado no momento. Já irei te responder!
+              </div>
+            </div>
+          )}
 
           {error && (
             <p className="text-xs text-center px-2" style={{ color: '#DC2626' }}>

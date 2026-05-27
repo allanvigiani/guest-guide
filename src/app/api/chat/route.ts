@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
   }
 
   const property = await getPropertyByCode(propertyCode.toUpperCase())
-
   const recentMessages = (messages as MessageParam[]).slice(-10)
 
   const { stream: _, ...streamParams } = buildChatPayload(
@@ -53,7 +52,13 @@ export async function POST(request: NextRequest) {
     })
 
     sdkStream.on("error", (err: unknown) => {
-      writer.abort(err)
+      const message =
+        err instanceof Anthropic.RateLimitError
+          ? "O serviço de IA está sobrecarregado. Aguarde alguns instantes e tente novamente."
+          : err instanceof Error
+            ? err.message
+            : "Erro no serviço de IA."
+      writer.write(encoder.encode(message)).then(() => writer.close()).catch(() => writer.close())
     })
   } catch (err) {
     await writer.close()
