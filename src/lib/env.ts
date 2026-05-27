@@ -4,6 +4,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
   AI_API_KEY: z.string().min(1, "AI_API_KEY is required"),
   AI_MODEL: z.string().min(1, "AI_MODEL is required"),
+  AI_CHAT_MODEL: z.string().min(1, "AI_CHAT_MODEL is required"),
 })
 
 const parsed = envSchema.safeParse(process.env)

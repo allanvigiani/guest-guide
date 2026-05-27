@@ -17,7 +17,7 @@ export function buildChatPayload(
   experiences: PropertyExperiences | null
 ): ChatPayload {
   return {
-    model: env.AI_MODEL,
+    model: env.AI_CHAT_MODEL,
     max_tokens: 1024,
     stream: true,
     system: buildAssistantPrompt(property, experiences),
