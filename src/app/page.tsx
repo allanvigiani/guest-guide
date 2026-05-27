@@ -46,18 +46,19 @@ export default async function Home() {
               <MessageCircle size={18} />
               Falar com o Suporte
             </a>
-            <button
+            <a
+              href="#imoveis"
               className="px-6 py-3 rounded-full font-semibold text-white border border-white/40 transition-colors cursor-pointer"
               style={{ backgroundColor: "rgba(255,255,255,0.12)", backdropFilter: "blur(6px)" }}
             >
               Explorar imóveis ↓
-            </button>
+            </a>
           </div>
         </div>
       </section>
 
       {/* Properties grid */}
-      <section className="max-w-6xl mx-auto px-4 py-16">
+      <section id="imoveis" className="max-w-6xl mx-auto px-4 pt-6 pb-12">
         <h2 className="text-2xl font-bold mb-8" style={{ color: "var(--sz-navy)" }}>
           Imóveis cadastrados
         </h2>

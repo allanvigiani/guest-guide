@@ -19,4 +19,4 @@ const globalForPrisma = global as unknown as { prisma: PrismaInstance | undefine
 export const prisma: PrismaInstance =
   globalForPrisma.prisma ?? createClient()
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+globalForPrisma.prisma = prisma

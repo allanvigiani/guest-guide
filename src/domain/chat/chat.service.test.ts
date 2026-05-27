@@ -21,7 +21,7 @@ describe("buildChatPayload", () => {
       model: "claude-test",
       max_tokens: 1024,
       stream: true,
-      system: "system prompt gerado",
+      system: [{ type: "text", text: "system prompt gerado", cache_control: { type: "ephemeral" } }],
       messages,
     })
   })
